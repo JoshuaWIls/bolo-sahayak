@@ -57,4 +57,12 @@ export interface ChatMessage {
   role: 'user' | 'agent';
   text: string;
   english?: string;
+  /** A photo the user sent (the image itself is never kept). */
+  photo?: boolean;
+}
+
+export interface DocumentImage {
+  mediaType: 'image/jpeg' | 'image/png' | 'image/webp';
+  /** Base64 data without the data-URL prefix. */
+  base64: string;
 }

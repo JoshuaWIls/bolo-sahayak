@@ -53,7 +53,7 @@ describe('LanguagePolicy', () => {
 describe('OutputSafetyFilter', () => {
   const venue = { staffCounter: 'Counter 3' } as Venue;
   const filter = new OutputSafetyFilter();
-  const ctx = { venue, language: 'en' as const, text: '' };
+  const ctx = { venue, language: 'en' as const, script: 'latin' as const, text: '' };
 
   it('blocks a reply that asks for an OTP', () => {
     const out = filter.filter({ lang: 'en', action: 'none', reply: 'Please tell me the OTP.', replyEnglish: 'Please tell me the OTP.' }, ctx);

@@ -7,15 +7,25 @@ const LATIN_WORD = /[a-z]{2,}/i;
 
 /** Common words in romanised Hindi (Hinglish). */
 const HINDI_ROMAN = [
-  'hai', 'hain', 'kya', 'mujhe', 'mera', 'meri', 'ke', 'liye', 'kaunsi', 'kahan', 'kaise',
-  'nahin', 'nahi', 'bataun', 'batao', 'aaya', 'chahiye', 'karna', 'karne', 'paisa', 'paise',
-  'jama', 'kitna', 'kab', 'ji', 'bhai', 'theek', 'haan',
+  'hai', 'hain', 'kya', 'mujhe', 'mera', 'meri', 'mere', 'ke', 'ka', 'ki', 'ko', 'liye', 'kaunsi',
+  'kaun', 'kahan', 'kahaan', 'kaise', 'nahin', 'nahi', 'bataun', 'batao', 'bataiye', 'aaya',
+  'chahiye', 'chahie', 'chaiye', 'karna', 'karne', 'karo', 'kijiye', 'paisa', 'paise', 'jama',
+  'kitna', 'kitne', 'kab', 'ji', 'bhai', 'theek', 'thik', 'haan', 'mein', 'main', 'hum', 'aap',
+  'bolo', 'boliye', 'samajh', 'nikalna', 'daalna', 'jaana', 'jana', 'agli', 'gaye', 'gaya',
+  'ho', 'raha', 'rahi', 'tha', 'aur', 'bhi', 'abhi',
 ];
 
 /** Common words in romanised Kannada (Kanglish). */
 const KANNADA_ROMAN = [
   'ide', 'beku', 'elli', 'hogbeku', 'illa', 'yaava', 'yenu', 'hege', 'swalpa', 'gottilla',
   'banni', 'houdu', 'saar', 'madi', 'kodi',
+];
+
+/** Common English function words, so "where is the main gate" stays English. */
+const ENGLISH_COMMON = [
+  'the', 'is', 'are', 'where', 'what', 'when', 'which', 'how', 'i', 'want', 'to', 'a', 'an', 'my',
+  'please', 'can', 'you', 'for', 'need', 'help', 'with', 'of', 'do', 'does', 'this', 'that',
+  'it', 'me', 'should', 'go', 'take', 'there', 'here', 'next',
 ];
 
 /**
@@ -35,7 +45,10 @@ export class ScriptLanguageDetector implements LanguageDetector {
     const hi = words.filter((w) => HINDI_ROMAN.includes(w)).length;
     const kn = words.filter((w) => KANNADA_ROMAN.includes(w)).length;
 
+    const en = words.filter((w) => ENGLISH_COMMON.includes(w)).length;
+
     if (hi === 0 && kn === 0) return { lang: 'en', script: 'latin' };
+    if (en > hi + kn) return { lang: 'en', script: 'latin' };
     return { lang: kn > hi ? 'kn' : 'hi', script: 'latin' };
   }
 }

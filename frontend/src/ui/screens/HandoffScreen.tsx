@@ -1,5 +1,6 @@
 import type { AgentReply, Redaction, VenueInfo } from '../../domain/types';
 import { VerifiedHeader } from '../components/Header';
+import { MicIcon } from '../components/Icons';
 import { bi } from '../i18n';
 
 const LANGUAGE_NAMES: Record<string, string> = { hi: 'Hindi', kn: 'Kannada', en: 'English' };
@@ -10,10 +11,12 @@ interface Props {
   redactions: Redaction[];
   onEnd(): void;
   onBack(): void;
+  /** Go back to the conversation and start listening straight away. */
+  onSpeak(): void;
 }
 
 /** A card the user shows at the counter: English for staff, own language for the user. */
-export function HandoffScreen({ venue, reply, redactions, onEnd, onBack }: Props) {
+export function HandoffScreen({ venue, reply, redactions, onEnd, onBack, onSpeak }: Props) {
   const account = redactions.find((r) => r.kind === 'ACCOUNT');
   const lang = reply.lang;
 
@@ -37,8 +40,9 @@ export function HandoffScreen({ venue, reply, redactions, onEnd, onBack }: Props
         </section>
       </main>
       <footer className="footer">
+        <button type="button" className="btn btn-primary" onClick={onSpeak}><MicIcon /> {bi('speakAgain', lang)}</button>
+        <button type="button" className="btn" onClick={onBack}>{bi('back', lang)}</button>
         <button type="button" className="btn btn-dark" onClick={onEnd}>{bi('endErase', lang)}</button>
-        <button type="button" className="btn" onClick={onBack}>Back to conversation</button>
         <small className="muted center">Nothing is stored on this phone. Safe on a borrowed phone.</small>
       </footer>
     </div>

@@ -4,7 +4,7 @@
   "name": "[Hospital name]",
   "location": "OPD block entrance",
   "tollFree": "1800-XXX-XXXX",
-  "staffCounter": "the enquiry desk",
+  "staffCounter": "Enquiry Desk",
   "tasks": [
     { "id": "register", "icon": "clipboard", "label": { "hi": "OPD पंजीकरण", "kn": "OPD ನೋಂದಣಿ", "en": "OPD registration" } },
     { "id": "find-room", "icon": "map", "label": { "hi": "कमरा ढूँढना", "kn": "ಕೋಣೆ ಹುಡುಕುವುದು", "en": "Find a room" } },

@@ -102,3 +102,83 @@ h2 { font-size: 22px; }
 .staff-card dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; padding: 16px; }
 .staff-card dt { color: var(--muted); }
 .staff-card dd { margin: 0; font-weight: 700; text-align: right; }
+
+.route-row.with-fare { grid-template-columns: 1fr 2fr 1fr 1fr; }
+.photo-msg { display: flex; align-items: center; gap: 8px; }
+.photo-msg svg { width: 20px; height: 20px; }
+
+/* "Thinking" dots while a reply is on its way. */
+.typing { display: flex; gap: 6px; padding: 16px 18px; }
+.typing span { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite ease-in-out; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .typing span { animation: none; opacity: 0.6; } }
+
+.home { max-width: 520px; margin: 0 auto; }
+.home-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.btn-ghost { border-color: var(--line); font-weight: 500; }
+
+/* ---------- Printable poster ---------- */
+.poster-page { max-width: 820px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.poster-tools { display: flex; flex-wrap: wrap; gap: 10px; }
+.poster-tools .notice { flex-basis: 100%; margin: 0; }
+.poster {
+  background: #fff; border: 3px solid var(--green); border-radius: 24px; padding: 32px 28px;
+  display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center;
+}
+.poster-head h1 { font-size: clamp(28px, 6vw, 48px); color: var(--green); }
+.poster-head p { margin: 8px 0 0; font-size: clamp(16px, 3vw, 22px); line-height: 1.6; }
+.poster-qr { width: min(70vw, 360px); aspect-ratio: 1; }
+.poster-qr svg { width: 100%; height: 100%; display: block; }
+.poster-url { margin: 0; font-family: ui-monospace, monospace; font-size: 18px; font-weight: 700; word-break: break-all; }
+.poster-call { margin: 0; font-size: 18px; }
+.poster-call strong { font-size: 30px; letter-spacing: 0.02em; }
+.poster-promise {
+  display: flex; gap: 12px; text-align: left; padding: 14px 18px; border-radius: var(--radius);
+  background: var(--saffron-soft); border: 2px solid var(--saffron-line); color: #4a3410; font-size: 16px;
+}
+.poster-promise svg { flex-shrink: 0; width: 32px; height: 32px; }
+.poster-foot { width: 100%; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+
+@media print {
+  @page { size: A4 portrait; margin: 12mm; }
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .poster-page { padding: 0; max-width: none; }
+  .poster { border-width: 4px; min-height: 270mm; justify-content: space-between; break-inside: avoid; }
+  .poster-qr { width: 110mm; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ---------- Bug-sweep fixes ---------- */
+
+/* Conversation: exactly one viewport tall. Header + chips stay on top, the chat
+   scrolls, and quick actions + mic bar are ALWAYS visible at the bottom. */
+.screen-fixed { height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; }
+.screen-fixed .chat { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.screen-fixed > header, .screen-fixed > .emergency, .screen-fixed > .quick-actions, .screen-fixed > .mic-bar { flex: 0 0 auto; }
+.mic-bar { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+.quick-actions { padding-top: 10px; background: var(--ground); }
+.quick-actions .btn { min-height: 48px; font-size: 14px; padding: 6px 10px; }
+.verified-bar { padding-top: calc(10px + env(safe-area-inset-top)); }
+
+/* In-page language switch (no native popup). */
+.lang-chips { display: inline-flex; gap: 4px; flex-shrink: 0; }
+.lang-chip {
+  font: inherit; font-size: 14px; font-weight: 600; min-height: 44px; min-width: 44px; padding: 0 10px;
+  border-radius: 12px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); cursor: pointer;
+}
+.lang-chip-on { background: var(--green); border-color: var(--green); color: #fff; }
+.lang-chip:focus-visible { outline: 3px solid #f2a93b; outline-offset: 2px; }
+.welcome-langs { display: flex; justify-content: center; }
+.welcome-langs .lang-chip { min-height: 48px; font-size: 16px; padding: 0 16px; }
+
+@media (max-width: 360px) {
+  .verified-bar .host { display: none; }
+  .lang-chip { padding: 0 8px; font-size: 13px; }
+}
+.notice-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.btn-small { min-height: 44px; font-size: 14px; padding: 4px 12px; flex-shrink: 0; }
+.emergency { flex: 0 0 auto; }
+a.btn[aria-disabled="true"] { pointer-events: none; opacity: 0.6; }

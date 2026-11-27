@@ -24,7 +24,7 @@ function spyModel(inner: LanguageModel = new MockLanguageModel()) {
 
 function setup(model?: LanguageModel) {
   const container = buildContainer(config, model ? { model } : {});
-  return createApp({ turnService: container.turnService, venues: container.venues });
+  return createApp(container);
 }
 
 let counter = 0;
