@@ -1,0 +1,25 @@
+{
+  "code": "BUS-JN4B-N",
+  "type": "bus",
+  "name": "Jayanagar 4th Block bus stop",
+  "location": "towards Majestic",
+  "tollFree": "1800-XXX-XXXX",
+  "staffCounter": "the toll-free helpline",
+  "tasks": [
+    { "id": "which-bus", "icon": "bus", "label": { "hi": "कौन सी बस", "kn": "ಯಾವ ಬಸ್", "en": "Which bus" } },
+    { "id": "next-bus", "icon": "clock", "label": { "hi": "अगली बस कब", "kn": "ಮುಂದಿನ ಬಸ್ ಯಾವಾಗ", "en": "When is the next bus" } },
+    { "id": "read-board", "icon": "camera", "label": { "hi": "बोर्ड पढ़ना", "kn": "ಬೋರ್ಡ್ ಓದುವುದು", "en": "Read the board" } }
+  ],
+  "directions": {},
+  "routes": [
+    { "route": "14B", "destination": "Majestic", "etaMinutes": 6, "fare": "[FARE]" },
+    { "route": "9C", "destination": "Majestic", "etaMinutes": 18, "fare": "[FARE]" },
+    { "route": "21A", "destination": "Whitefield", "etaMinutes": 4, "fare": "[FARE]" }
+  ],
+  "synonyms": {
+    "majestic": "Majestic",
+    "kempegowda bus station": "Majestic",
+    "whitefield": "Whitefield"
+  },
+  "sttHints": ["14B", "9C", "21A", "Majestic", "Whitefield"]
+}

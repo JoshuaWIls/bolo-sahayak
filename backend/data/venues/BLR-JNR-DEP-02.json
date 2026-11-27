@@ -1,0 +1,28 @@
+{
+  "code": "BLR-JNR-DEP-02",
+  "type": "bank",
+  "name": "[Bank name] Jayanagar Branch",
+  "location": "near the deposit counter",
+  "tollFree": "1800-XXX-XXXX",
+  "staffCounter": "Counter 3",
+  "tasks": [
+    { "id": "deposit", "icon": "cash", "label": { "hi": "पैसे जमा करना", "kn": "ಹಣ ಜಮಾ", "en": "Deposit cash" } },
+    { "id": "withdraw", "icon": "wallet", "label": { "hi": "पैसे निकालना", "kn": "ಹಣ ತೆಗೆಯುವುದು", "en": "Withdraw cash" } },
+    { "id": "kyc", "icon": "id", "label": { "hi": "KYC अपडेट", "kn": "KYC ಅಪ್‌ಡೇಟ್", "en": "Update KYC" } },
+    { "id": "pension", "icon": "certificate", "label": { "hi": "जीवन प्रमाण पत्र", "kn": "ಜೀವನ ಪ್ರಮಾಣ ಪತ್ರ", "en": "Life certificate" } }
+  ],
+  "directions": {
+    "deposit": "Counter 3, straight ahead",
+    "kyc": "Counter 5, left side",
+    "manager": "Manager's cabin, back of the hall"
+  },
+  "routes": [],
+  "synonyms": {
+    "paisa daalna": "deposit",
+    "paise jama": "deposit",
+    "parchi": "form",
+    "passbook entry": "passbook",
+    "jeevan pramaan": "pension"
+  },
+  "sttHints": ["deposit slip", "passbook", "KYC", "Counter 3", "life certificate"]
+}

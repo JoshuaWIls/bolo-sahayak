@@ -1,0 +1,29 @@
+{
+  "code": "HOSP-OPD-01",
+  "type": "hospital",
+  "name": "[Hospital name]",
+  "location": "OPD block entrance",
+  "tollFree": "1800-XXX-XXXX",
+  "staffCounter": "the enquiry desk",
+  "tasks": [
+    { "id": "register", "icon": "clipboard", "label": { "hi": "OPD पंजीकरण", "kn": "OPD ನೋಂದಣಿ", "en": "OPD registration" } },
+    { "id": "find-room", "icon": "map", "label": { "hi": "कमरा ढूँढना", "kn": "ಕೋಣೆ ಹುಡುಕುವುದು", "en": "Find a room" } },
+    { "id": "read-paper", "icon": "document", "label": { "hi": "पर्ची पढ़ना", "kn": "ಚೀಟಿ ಓದುವುದು", "en": "Read a slip or report" } },
+    { "id": "pharmacy", "icon": "pill", "label": { "hi": "दवाखाना", "kn": "ಔಷಧಾಲಯ", "en": "Pharmacy" } }
+  ],
+  "directions": {
+    "registration": "Registration counters, ground floor, right of the entrance",
+    "orthopaedics": "Room 112, first floor, lift on your right",
+    "lab": "Blood test lab, ground floor, left corridor",
+    "pharmacy": "Pharmacy, ground floor, straight ahead",
+    "emergency": "Emergency, ground floor, left of the main gate"
+  },
+  "routes": [],
+  "synonyms": {
+    "haddi": "orthopaedics",
+    "khoon ki jaanch": "lab",
+    "dawai": "pharmacy",
+    "parchi": "slip"
+  },
+  "sttHints": ["OPD", "orthopaedics", "token", "pharmacy", "lab"]
+}

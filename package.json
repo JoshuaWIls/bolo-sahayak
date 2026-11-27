@@ -1,0 +1,12 @@
+{
+  "name": "bolo-sahayak",
+  "private": true,
+  "description": "Voice-first help desk for Indian banks, hospitals and bus stops",
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "test": "npm --prefix backend test && npm --prefix frontend test",
+    "typecheck": "npm --prefix backend run typecheck && npm --prefix frontend run typecheck"
+  }
+}
