@@ -83,6 +83,26 @@ export interface TurnRequest {
   text: string;
   /** 0..1 confidence reported by the speech recogniser, if known. */
   sttConfidence?: number;
+  /**
+   * Language the user explicitly picked (language menu, or a button they
+   * tapped). Overrides detection, which is unreliable for canned button text.
+   */
+  preferredLanguage?: LanguageCode;
+}
+
+export type DocumentMediaType = 'image/jpeg' | 'image/png' | 'image/webp';
+
+export interface DocumentImage {
+  mediaType: DocumentMediaType;
+  /** Base64 image data, without the data-URL prefix. */
+  base64: string;
+}
+
+export interface DocumentRequest {
+  sessionId: string;
+  venueCode: string;
+  image: DocumentImage;
+  preferredLanguage?: LanguageCode;
 }
 
 export interface TurnResult {

@@ -25,11 +25,23 @@ npm run dev:frontend     # http://localhost:5173  → open /v/BLR-JNR-DEP-02
 ```
 
 Demo help points: `/v/BLR-JNR-DEP-02` (bank), `/v/HOSP-OPD-01` (hospital), `/v/BUS-JN4B-N` (bus stop).
+Printable posters: `/poster/<CODE>` (set `VITE_PUBLIC_URL` in `frontend/.env` so the QR points at the real address).
 Voice input needs Chrome (desktop or Android) and microphone permission; every screen also has a
 "Type instead" box.
 
-To use Claude instead of the scripted mock, set `LLM_PROVIDER=anthropic` and `ANTHROPIC_API_KEY`
-(see `backend/.env.example`). The default model is `claude-opus-5-5` at low effort for voice latency.
+The scripted mock only spots keywords. For real understanding, pick an AI provider in `backend/.env`
+(copy `backend/.env.example`; the server loads it on start):
+
+| `LLM_PROVIDER` | Cost | Key | Notes |
+|---|---|---|---|
+| `gemini` | free tier | `GEMINI_API_KEY` from aistudio.google.com/apikey | Recommended free option: good Hindi/Kannada, reads photos |
+| `groq` | free tier | `GROQ_API_KEY` from console.groq.com/keys | Very fast; separate vision model for photos |
+| `ollama` | free, local | none | Runs on your machine (`ollama pull qwen2.5:7b`); weaker Kannada |
+| `anthropic` | paid | `ANTHROPIC_API_KEY` | Claude, structured outputs; default `claude-opus-5-5` at low effort |
+| `openai` | varies | `LLM_API_KEY` + `LLM_BASE_URL` + `LLM_MODEL` | Any other OpenAI-compatible API |
+
+`LLM_MODEL` / `LLM_VISION_MODEL` override the defaults; `cd backend && npm run models` lists the names your key can use.
+With the free providers, a rate limit or bad reply falls back to the scripted mock for that turn (logged as `[llm] …`).
 
 ```bash
 npm test          # backend acceptance + unit tests, frontend domain tests
@@ -76,7 +88,26 @@ Dependencies point inward only; concrete classes are wired in one composition ro
 - Emergency words (Hindi, Kannada, English) return "Go to Emergency / call 108"; the model is never called.
 - Fraud words return the 1930 cyber-fraud helpline and a staff hand-off.
 - Model replies that ask for credentials are replaced with a staff hand-off.
-- Sessions are in memory only, expire after 30 minutes, and "End and erase" deletes them.
+- Sessions are in memory only, expire after 30 minutes (swept automatically), and "End and erase" deletes them.
+- Photos ("Show form") are shrunk and stripped of EXIF on the phone, never stored, and any numbers the
+  reader copies off the paper are masked before they reach the screen or session history.
+
+## Language rules
+
+- The first utterance sets the reply language; afterwards a different language must be heard twice in a
+  row before switching (noise protection).
+- Asking for a language ("Hindi mein bolo", "in Kannada", "ಕನ್ನಡದಲ್ಲಿ ಹೇಳಿ") switches **immediately**, in native script.
+- Picking a language in the menu, or tapping a button, sends `preferredLanguage`, which the server follows.
+- Safety replies (emergency, OTP, fraud) use the language of the utterance itself when its script is unambiguous.
+
+## API
+
+| Method | Path | Body |
+|---|---|---|
+| `GET` | `/api/venues/:code` | — |
+| `POST` | `/api/turn` | `{ sessionId, venueCode, text, sttConfidence?, preferredLanguage? }` |
+| `POST` | `/api/document` | `{ sessionId, venueCode, image: { mediaType, base64 }, preferredLanguage? }` |
+| `DELETE` | `/api/sessions/:id` | — |
 
 ## Status
 
@@ -85,9 +116,9 @@ Dependencies point inward only; concrete classes are wired in one composition ro
 | Voice loop, barge-in, slow speech, typed fallback | Done (browser Web Speech API) |
 | Guardrails, masking, language policy, clarification | Done, covered by tests |
 | Claude adapter (structured JSON output) | Done; not exercised by tests (tests use the mock) |
-| Camera / form reading | Placeholder notice — next milestone (vision adapter) |
+| Camera / form reading | Done: `POST /api/document`, mock reader + Claude vision adapter |
 | Indic cloud speech (Sarvam / Bhashini) | Next: add `SpeechRecognizer`/`SpeechSynthesizer` adapters |
 | Toll-free IVR channel | Next: telephony adapter calling the same `/api/turn` |
-| Printable QR poster page | Next |
+| Printable QR poster page | Done: `/poster/<CODE>` (A4 print styles) |
 
 Bank, hospital and transport names, phone numbers, fares and routes in `backend/data/venues` are placeholders.

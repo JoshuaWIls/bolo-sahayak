@@ -2,7 +2,7 @@
  * Ports the UI depends on. Browser speech, a cloud speech API or a test
  * double can be swapped in without changing any component.
  */
-import type { LanguageCode, TurnResult, VenueInfo } from '../domain/types';
+import type { DocumentImage, LanguageCode, TurnResult, VenueInfo } from '../domain/types';
 
 export interface RecognitionResult {
   transcript: string;
@@ -20,7 +20,10 @@ export interface RecognitionCallbacks {
 export interface SpeechRecognizer {
   readonly isSupported: boolean;
   start(lang: LanguageCode, callbacks: RecognitionCallbacks): void;
+  /** Stop listening and deliver what was heard so far. */
   stop(): void;
+  /** Stop listening and discard everything — no callbacks fire afterwards. */
+  cancel(): void;
 }
 
 export interface SpeechSynthesizer {
@@ -36,6 +39,13 @@ export interface AssistantApi {
     venueCode: string;
     text: string;
     sttConfidence?: number;
+    preferredLanguage?: LanguageCode;
+  }): Promise<TurnResult>;
+  readDocument(input: {
+    sessionId: string;
+    venueCode: string;
+    image: DocumentImage;
+    preferredLanguage?: LanguageCode;
   }): Promise<TurnResult>;
   endSession(sessionId: string): Promise<void>;
 }

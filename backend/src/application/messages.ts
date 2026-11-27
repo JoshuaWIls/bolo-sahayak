@@ -43,6 +43,24 @@ const PHRASES = {
     kn: 'ಕ್ಷಮಿಸಿ, ಅರ್ಥವಾಗಲಿಲ್ಲ. ಕೆಳಗಿನಿಂದ ಆಯ್ಕೆ ಮಾಡಿ ಅಥವಾ {tollFree} ಗೆ ಉಚಿತ ಕರೆ ಮಾಡಿ.',
     en: "Sorry, I didn't understand. Pick an option below or call {tollFree} free.",
   },
+  languageSwitched: {
+    hi: 'ठीक है, अब मैं हिंदी में बात करूँगा। बताइए, आपको क्या चाहिए?',
+    hiLatin: 'Theek hai, ab main Hindi mein baat karunga. Bataiye, aapko kya chahiye?',
+    kn: 'ಸರಿ, ಈಗ ನಾನು ಕನ್ನಡದಲ್ಲಿ ಮಾತನಾಡುತ್ತೇನೆ. ಹೇಳಿ, ನಿಮಗೆ ಏನು ಬೇಕು?',
+    en: "Okay, I'll speak {languageName} now. Tell me, what do you need?",
+  },
+  outOfScope: {
+    hi: 'यह मदद केंद्र {venue} का है। {place} के काम में मैं यहाँ मदद नहीं कर सकता — कृपया {place} में ही पूछिए। यहाँ मैं इनमें मदद कर सकता हूँ: {tasks}।',
+    hiLatin: 'Yeh help point {venue} ka hai. {place} ke kaam mein main yahaan madad nahin kar sakta — please {place} mein hi poochhiye. Yahaan main inmein madad kar sakta hoon: {tasks}.',
+    kn: 'ಈ ಸಹಾಯ ಕೇಂದ್ರ {venue} ಗೆ ಸೇರಿದೆ. {place} ಕೆಲಸಕ್ಕೆ ನಾನು ಇಲ್ಲಿ ಸಹಾಯ ಮಾಡಲು ಆಗುವುದಿಲ್ಲ — ದಯವಿಟ್ಟು {place} ನಲ್ಲೇ ಕೇಳಿ. ಇಲ್ಲಿ ನಾನು ಇವುಗಳಲ್ಲಿ ಸಹಾಯ ಮಾಡಬಹುದು: {tasks}.',
+    en: "This help point is for {venue}. I can't help with {placeEn} here — please ask at {placeEn} itself. Here I can help with: {tasksEn}.",
+  },
+  unreadablePhoto: {
+    hi: 'फ़ोटो साफ़ नहीं आई। फ़ॉर्म को रोशनी में सीधा रखकर फिर फ़ोटो लीजिए।',
+    hiLatin: 'Photo saaf nahin aayi. Form ko roshni mein seedha rakhkar phir photo lijiye.',
+    kn: 'ಫೋಟೋ ಸ್ಪಷ್ಟವಾಗಿಲ್ಲ. ಫಾರ್ಮ್ ಅನ್ನು ಬೆಳಕಿನಲ್ಲಿ ನೇರವಾಗಿ ಇಟ್ಟು ಮತ್ತೆ ಫೋಟೋ ತೆಗೆಯಿರಿ.',
+    en: "The photo isn't clear. Hold the form flat in good light and take the photo again.",
+  },
   handoff: {
     hi: 'मैं आपको स्टाफ़ के पास भेज रहा हूँ। यह स्क्रीन {counter} पर दिखाइए।',
     hiLatin: 'Main aapko staff ke paas bhej raha hoon. Yeh screen {counter} par dikhaiye.',
@@ -60,7 +78,8 @@ export function phrase(
   vars: Record<string, string> = {},
 ): { reply: string; replyEnglish: string } {
   const p: Phrase = PHRASES[key];
-  const chosen = lang === 'hi' ? (script === 'native' ? p.hi : p.hiLatin) : p[lang];
+  // Mixed (Devanagari + English words) still reads best in Devanagari.
+  const chosen = lang === 'hi' ? (script === 'latin' ? p.hiLatin : p.hi) : p[lang];
   return { reply: fill(chosen, vars), replyEnglish: fill(p.en, vars) };
 }
 

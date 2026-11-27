@@ -24,9 +24,9 @@ const FRAUD_TERMS = [
 export class EmergencyGuardrail implements InputGuardrail {
   readonly name = 'emergency';
 
-  check({ text, language }: GuardrailContext): AgentReply | null {
+  check({ text, language, script }: GuardrailContext): AgentReply | null {
     if (!containsAny(text, EMERGENCY_TERMS)) return null;
-    return { lang: language, action: 'emergency', ...phrase('emergency', language, scriptOf(text)) };
+    return { lang: language, action: 'emergency', ...phrase('emergency', language, script) };
   }
 }
 
@@ -34,9 +34,9 @@ export class EmergencyGuardrail implements InputGuardrail {
 export class CredentialGuardrail implements InputGuardrail {
   readonly name = 'credential';
 
-  check({ text, language }: GuardrailContext): AgentReply | null {
-    if (!containsAny(text, CREDENTIAL_TERMS)) return null;
-    return { lang: language, action: 'none', ...phrase('otpRefusal', language, scriptOf(text)) };
+  check({ text, language, script }: GuardrailContext): AgentReply | null {
+    if (!containsAny(withoutPostalPin(text), CREDENTIAL_TERMS)) return null;
+    return { lang: language, action: 'none', ...phrase('otpRefusal', language, script) };
   }
 }
 
@@ -44,17 +44,24 @@ export class CredentialGuardrail implements InputGuardrail {
 export class FraudGuardrail implements InputGuardrail {
   readonly name = 'fraud';
 
-  check({ text, language }: GuardrailContext): AgentReply | null {
+  check({ text, language, script }: GuardrailContext): AgentReply | null {
     if (!containsAny(text, FRAUD_TERMS)) return null;
     return {
       lang: language,
       action: 'handoff',
       handoff: { task: 'Suspected fraud', check: 'Advise customer; 1930 helpline', language },
-      ...phrase('fraud', language, scriptOf(text)),
+      ...phrase('fraud', language, script),
     };
   }
 }
 
-function scriptOf(text: string) {
-  return /[ऀ-ॿಀ-೿]/.test(text) ? ('native' as const) : ('latin' as const);
+/**
+ * "PIN code" on an address / KYC form is a postal code, not a secret.
+ * Remove it before looking for credential words.
+ */
+function withoutPostalPin(text: string): string {
+  return text
+    .replace(/\bpin[\s-]*code\b/gi, ' ')
+    .replace(/पिन\s*कोड/g, ' ')
+    .replace(/ಪಿನ್\s*ಕೋಡ್/g, ' ');
 }

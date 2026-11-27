@@ -9,6 +9,7 @@ import type {
   AgentReply,
   ConversationTurn,
   DetectedLanguage,
+  DocumentImage,
   LanguageCode,
   ScriptStyle,
   Venue,
@@ -64,10 +65,27 @@ export interface LanguageModel {
   generate(context: AgentContext): Promise<unknown>;
 }
 
+/** Everything a vision model needs to explain one photographed form / slip / board. */
+export interface DocumentContext {
+  venue: Venue;
+  language: LanguageCode;
+  script: ScriptStyle;
+  image: DocumentImage;
+}
+
+/**
+ * Reads a photo of a form, slip or notice board and explains it.
+ * Like LanguageModel, returns RAW output; the application validates it.
+ */
+export interface DocumentReader {
+  read(context: DocumentContext): Promise<unknown>;
+}
+
 /** Context shared by guardrails. */
 export interface GuardrailContext {
   venue: Venue;
   language: LanguageCode;
+  script: ScriptStyle;
   text: string;
 }
 
